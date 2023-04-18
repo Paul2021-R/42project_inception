@@ -1,0 +1,321 @@
+version: '3'
+
+services:
+  # Adminer Container with Service
+  adminer:
+    # Dockerfile Location from current docker-compose.yml
+    build: ./requirements/bonus/adminer/
+    # Container Name is same name with service
+    container_name: adminer 
+    # dependency of Service
+    depends_on:
+      - mariadb
+    # Image Name from Docker-file
+    image: adminer
+    # Network from Generated one with Docker compose
+    networks:
+      - network-mariadb
+      - netwrok-nginx
+    # Restart policy for keeping service active regardless of any condition
+    restart: always
+    # volume to be Independent of container
+    volumes:
+      - volume-wordpress: /var/www/wordpress
+
+  cAdvisor Container with Service
+  cadvisor:
+    # Dockerfile locations from current docker-compose.yml
+    build: ./requirements/bonus/cadvisor/
+    # Container Name is same name with service
+    container_name: cadvisor
+    # Environment variables
+    environment:
+      - CADVISOR_PORT=${CADVISOR_PORT}
+      - CADVISOR_URL_BASE_PREFIX=${CADVISOR_URL_BASE_PREFIX}
+    # Image Name from Dockerfile
+    image: cadvisor 
+    # Network from generated one with Docker-compose
+    networks:
+      - network-monitor
+    # Privilieged option to monitor
+    privileged: true
+    # restart policy for keeping service active regardless of any conditions
+    restart: always
+    # volume to be independent of container
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+
+  # FTP container with Service 
+  ftp:
+    # Dockerfile Locatrion from current docker-compose.yml
+    build: ./requirements/bonux/vsftpd/
+    # Container name is same with service name
+    container_name: ftp
+    # Environment Variables
+    environment:
+      - FTP_ROOT=${FTP_ROOT}
+      - FTP_USER=${FTP_USER}
+      - FTP_PWD=${FTP_PWD}
+    # Image Name from Dockerfile
+    image: ftp
+    # Port Forwarding to the Host OS
+    ports:
+      - '21:21'
+    # Restart Policy for keeping Service active regardless of any condition
+    restart: always
+    # volume to be independent of container
+    volumes:
+      - volume-wordpress:/var/www/wordpress 
+
+  # Grafana Container with service 
+  grafana:
+    # Dockerfile Location from current docker-compose.yml 
+    build: ./requirements/bonus/grafana/
+    # Container Name is same with service name 
+    container_name: grafana
+    # Environment variables
+    environment:
+      - PROMETHEUS_HOST=${PROMETHEUS_HOST}
+      - PROMETHEUS_PORT=${PROMETHEUS_PORT}
+      - GF_AUTH_DISABLE_LOGIN_FORM=${GF_AUTH_DISABLE_LOGIN_FORM}
+      - GF_AUTH_ANONYMOUS_ENABLED=${GF_AUTH_ANONYMOUS_ENABLED}
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=${GF_AUTH_ANONYMOUS_ORG_ROLE}
+    # Image name from Dockerfile
+    image: grafana
+    # Network from generated one with Docker compose
+    networks:
+      - network-nginx
+      - network-monitor
+    # Restart policy for keeping service active regardless of any condition
+    restart: always
+    # volume to be independent of container
+    volume:
+      - volume-monitor:/monitor
+  
+  # Maria DB 
+  mariadb:
+    # Dockerfile location from current docker-compose.yml
+    build: ./requirements/mariadb/
+    # Container name is same with service name
+    container_name: mariadb
+    # Environment Varaibles
+    environment:
+      - HOST_NAME=${HOST_NAME}
+      - HOST_IPV4=${HOST_IPV4}
+      - HOST_IPV6=${HOST_IPV6}
+      - MARIADB_DB=${MARIADB_DB}
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PWD=${MARIADB_PWD}
+      - MARIADB_ADMIN_USER=${MARIADB_ADMIN_USER}
+      - MARIADB_ADMIN_PWD=${MARIADB_ADMIN_PWD}
+    # Image name from Dockerfile
+    image: mariadb
+    # Network from gerated one with docker compose
+    networks:
+      - network-mariadb
+    # Restart policy for keeping service active regardless of any condtion
+    restart: always
+    # Volume to be independent of container
+    volumes:
+      - volume-mariadb:/var/lib/mysql
+
+  # nginx
+  nginx:
+    # Dockerfile location from current docker-compose.yml
+    build: ./requirements/nginx/
+    # Container name is same with service name
+    container_name: nginx
+    # Dependency of service
+    depends_on:
+      - wordpress
+    # Image name from Dockerfile
+    image: nginx
+    # Network from gerated one with docker compose
+    networks:
+      - network-nginx
+    # Port forwarding to the Host os
+    ports:
+      - '443:443'
+    # Restart policy for keeping service active regardless of any condtion
+    restart: always
+    # Volume to be independent of container
+    volumes:
+      - volume-wordpress:/var/www/wordpress
+
+  # prometheus  
+  prometheus:
+    # Dockerfile location from current docker-compose.yml
+    build: ./requirements/bonus/prometheus/
+    # Container name is same with service name
+    container_name: prometheus
+    # Environment Varaibles
+    environment:
+      - CADVISOR_HOST=${CADVISOR_HOST}
+      - CADVISOR_PORT=${CADVISOR_PORT}
+      - PROMETHEUS_PORT=${PROMETHEUS_PORT}
+    # Image name from Dockerfile
+    image: prometheus
+    # Network from gerated one with docker compose
+    networks:
+      - network-monitor
+    # Restart policy for keeping service active regardless of any condtion
+    restart: always
+    # Volume to be independent of container
+    volumes:
+      - volume-monitor:/monitor
+
+  # redis
+  redis:
+    # Dockerfile location from current docker-compose.yml
+    build: ./requirements/bonus/redis/
+    # Container name is same with service name
+    container_name: redis
+    # Image name from Dockerfile
+    image: redis
+    # Network from gerated one with docker compose
+    networks:
+      - network-redis
+    # Restart policy for keeping service active regardless of any condtion
+    restart: always
+
+  # site
+  site:
+    # Dockerfile location from current docker-compose.yml
+    build: ./requirements/bonus/site/
+    # Container name is same with service name
+    container_name: site
+    # Image name from Dockerfile
+    image: site
+    # Network from gerated one with docker compose
+    networks:
+      - network-nginx
+    # Restart policy for keeping service active regardless of any condtion
+    restart: always
+    # Volume to be independent of container
+    volumes:
+      - volume-site:/var/www/html
+
+  # wordpress 
+  wordpress:
+    # Dockerfile location from current docker-compose.yml
+    build: ./requirements/wordpress/
+    # Container name is same with service name
+    container_name: wordpress
+    # Dependency of Service
+    depends_on:
+      - mariadb
+    # Environment Varaibles
+    environment:
+      - WP_URL=${WP_URL}
+      - WP_TITLE=${WP_TITLE}
+      - WP_ADMIN_USER=${WP_ADMIN_USER}
+      - WP_ADMIN_PWD=${WP_ADMIN_PWD}
+      - WP_ADMIN_EMAIL=${WP_ADMIN_EMAIL}
+      - WP_USER=${WP_USER}
+      - WP_USER_PWD=${WP_USER_PWD}
+      - WP_USER_EMAIL=${WP_USER_EMAIL}
+      - MARIADB_HOST=${MARIADB_HOST}
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PWD=${MARIADB_PWD}
+      - MARIADB_DB=${MARIADB_DB}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_CONNECTION_TIMEOUT_SECONDS=${REDIS_CONNECTION_TIMEOUT_SECONDS}
+      - REDIS_READ_TIMEOUT_SECONDS=${REDIS_READ_TIMEOUT_SECONDS}
+      - REDIS_DB_INDEX=${REDIS_DB_INDEX}
+    # Image name from Dockerfile
+    image: wordpress
+    # Network from gerated one with docker compose
+    networks:
+      - network-mariadb
+      - network-nginx
+      - network-redis
+    # Restart policy for keeping service active regardless of any condtion
+    restart: always
+    # Volume to be independent of container
+    volumes:
+      - volume-wordpress:/var/www/wordpress
+
+networks:
+  # Network name for services using MariaDB
+  network-mariadb:
+    # Network Driver among Bridge, Host, None(Container should be able to communicate)
+    driver: bridge
+    # Network Name(Not to make srcs prefix)
+    name: network-mariadb
+  network-monitor:
+    # Network Driver among Bridge, Host, None(Container should be able to communicate)
+    driver: bridge
+    # Network Name(Not to make srcs prefix)
+    name: network-monitor
+  network-nginx:
+    # Network Driver among Bridge, Host, None(Container should be able to communicate)
+    driver: bridge
+    # Network Name(Not to make srcs prefix)
+    name: network-nginx
+  network-redis:
+    # Network Driver among Bridge, Host, None(Container should be able to communicate)
+    driver: bridge
+    # Network Name(Not to make srcs prefix)
+    name: network-redis
+
+volumes:
+  volume-mariadb:
+    # Driver Selection among Local, Volume(Docker Volume), Temporary File System(tmpfs)
+    driver: local
+    # Driver Options for the Selection
+    driver_opts:
+      # Binding path
+      device: ${VOLPATH}/mariadb
+      # Mount option
+      o: bind
+      # volume Type
+      type: volume
+    # volume name(not to make srcs prefix)
+    name: volume-mariadb
+  
+  volume-monitor:
+    # Driver Selection among Local, Volume(Docker Volume), Temporary File System(tmpfs)
+    driver: local
+    # Driver Options for the Selection
+    driver_opts:
+      # Binding path
+      device: ${VOLPATH}/monitor
+      # Mount option
+      o: bind
+      # volume Type
+      type: volume
+    # volume name(not to make srcs prefix)
+    name: volume-monitor
+  
+  volume-site:
+    # Driver Selection among Local, Volume(Docker Volume), Temporary File System(tmpfs)
+    driver: local
+    # Driver Options for the Selection
+    driver_opts:
+      # Binding path
+      device: ${VOLPATH}/site
+      # Mount option
+      o: bind
+      # volume Type
+      type: volume
+    # volume name(not to make srcs prefix)
+    name: volume-site
+
+  volume-wordpress:
+    # Driver Selection among Local, Volume(Docker Volume), Temporary File System(tmpfs)
+    driver: local
+    # Driver Options for the Selection
+    driver_opts:
+      # Binding path
+      device: ${VOLPATH}/wordpress
+      # Mount option
+      o: bind
+      # volume Type
+      type: volume
+    # volume name(not to make srcs prefix)
+    name: volume-wordpress
