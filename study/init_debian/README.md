@@ -1,4 +1,4 @@
-# Ubuntu init setting memo 
+# debian init setting memo 
 1. Virtual Box setting : U can use anything, any spec without Graphic setting.
 2. Graphic setting : VMSVGA <- If change setting, there is a buggy. You can not login to UBUNTU login step.
 3. sudo apt-get update
@@ -17,12 +17,12 @@ sudo apt-get remove docker docker-engine docker.io containerd runc
 ## For Docker Repository, install some Packages
 ```shell
 sudo apt-get update
-sudo apt-get install apt-transport-htpps ca-certificates curl gnupg-agent software-properties-common
+sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common
 ```
 
 ## Regist Docker GPG key
 ```shell
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key-add -
+curl -fsSL https://download.docker.com/linux/debian/gpg | sudo apt-key add -
 
 # how to check key is properly set
 sudo apt-key fingerprint 0EBFCD88
@@ -31,7 +31,7 @@ sudo apt-key fingerprint 0EBFCD88
 
 ## Regist Docker Ubunutu Repository
 ```shell
-sudo apt-get-repository "deb [arch=amd64] https://download.docker.com/limux/ubuntu $(lsb_release -cs) stable"
+sudo apt-get-repository "deb [arch=amd64] https://download.docker.com/limux/debian $(lsb_release -cs) stable"
 ```
 
 ## install Docker
