@@ -22,7 +22,7 @@ services:
     volumes:
       - volume-wordpress: /var/www/wordpress
 
-  cAdvisor Container with Service
+  # cAdvisor Container with Service
   cadvisor:
     # Dockerfile locations from current docker-compose.yml
     build: ./requirements/bonus/cadvisor/
