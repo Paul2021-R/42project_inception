@@ -8,7 +8,7 @@ if [ $? -ne 0 ]; then
 	# Excute MariaDB Daemon as a Background Process to set up
 	/usr/bin/mysqld_safe --datadr=/var/lib/mysql &
 	# Change Config to use socket and network
-	sed -i "s/skip-netwroking/# skip-networking/g" /etc/my.cnf.d/mariadb-server.cnf
+	sed -i "s/skip-networking/# skip-networking/g" /etc/my.cnf.d/mariadb-server.cnf
 	# Change Config to Allow Every Host
 	sed -i "s/.*bind-address\s*=.*/bind-address=0.0.0.0\nport=3306/g" /etc/my.cnf.d/mariadb-server.cnf
 	# Check Server status 
