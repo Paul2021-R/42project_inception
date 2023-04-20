@@ -1,5 +1,5 @@
-# Base Image (Currently Most Stable 3.17)
-FROM        alpine:3.117 as builder
+# Base Image (Currently Most Stable Version 3.13)
+FROM        alpine:3.13 as builder
 
 # Change Working Directory
 WORKDIR     /app
@@ -15,8 +15,8 @@ RUN         apk update && \
 RUN         npm install && \
             npm run build
 
-# Base Image (Currently Most Stable Version)
-FROM        alpine:3.17 as server
+# Base Image (Currently Most Stable Version 3.13)
+FROM        alpine:3.13 as server
 
 # Package Installation
 RUN         apk update && \

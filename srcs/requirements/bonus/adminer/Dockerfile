@@ -1,11 +1,11 @@
 # Base Image (3.17 Most stable version)
-FROM		alpine:3.17
+FROM		alpine:3.13
 
 # Package Installation 
-RUN			apk update && \
-			apk add curl php7 php7-session php7-fpm php7-mysqli && \
-			wget -O /usr/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_x86_64 && \
-			chmod +x /usr/bin/dumb-init
+RUN         apk update && \
+            apk add curl php7 php7-session php7-fpm php7-mysqli && \
+            wget -O /usr/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_x86_64 && \
+            chmod +x /usr/bin/dumb-init
 
 # COPY files
 COPY		tools/script.sh /tmp/script.sh
@@ -17,4 +17,4 @@ RUN			chmod +x /tmp/script.sh
 ENTRYPOINT	[ "/usr/bin/dumb-init", "--" ]
 
 # Command to Execute by Entrypoint
-CMD			["sh", "-c", "/tmp/script.sh"]
+CMD			["sh", "-c", "/tmp/script.sh" ]
