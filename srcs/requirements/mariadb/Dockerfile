@@ -7,7 +7,7 @@ RUN			apk update && \
 			wget -O /usr/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_x86_64 && \
 			chmod +x /usr/bin/dumb-init && \
 			mkdir -p /run/mysqld /var/lib/mysql && \
-			mariadb-install-db --datedidr=/var/lib/mysql --auth-root-authentication-method=normal && \
+			mariadb-install-db --datadir=/var/lib/mysql --auth-root-authentication-method=normal && \
 			chown -R mysql:mysql /var/lib/mysql /run/mysqld
 
 # COPY files
