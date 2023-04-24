@@ -1,20 +1,20 @@
-# Base Image (3.17 Most stable version)
-FROM		alpine:3.13
+# Base Image (Currently Most Stable Version 3.13)
+FROM        alpine:3.13
 
-# Package Installation 
+# Package Installation
 RUN         apk update && \
             apk add curl php7 php7-session php7-fpm php7-mysqli && \
             wget -O /usr/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_x86_64 && \
             chmod +x /usr/bin/dumb-init
 
-# COPY files
-COPY		tools/script.sh /tmp/script.sh
+# Copy Files
+COPY        tools/script.sh /tmp/script.sh
 
-# Permission Control 
-RUN			chmod +x /tmp/script.sh
+# Permission Control
+RUN         chmod +x /tmp/script.sh
 
-# Handle every signal correctly by Dumb Init to PID 1
-ENTRYPOINT	[ "/usr/bin/dumb-init", "--" ]
+# Handle Every Signal Correctly by Dumb Init to PID 1
+ENTRYPOINT  [ "/usr/bin/dumb-init", "--" ]
 
 # Command to Execute by Entrypoint
-CMD			["sh", "-c", "/tmp/script.sh" ]
+CMD         [ "sh", "-c", "/tmp/script.sh" ]
