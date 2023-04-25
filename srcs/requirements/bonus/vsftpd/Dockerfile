@@ -1,4 +1,4 @@
-# Base Image (Currently Most Stable Version)
+# Base Image (Currently Most Stable Version 3.13)
 FROM        alpine:3.13
 
 # Package Installation
