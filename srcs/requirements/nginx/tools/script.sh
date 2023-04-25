@@ -1,12 +1,12 @@
 # !/bin/sh
 
-# Check whether configuration file exist or not
+# Check Whether Configuration File Exists or Not
 if [ ! -f "/etc/nginx/conf.d/default.conf" ]; then
-	# copy configuration file
-	cp /tmp/nginx.conf/ /etc/nginx/conf.d/default.conf
-	# Make wordpress ready to run nginx 
-	sleep 5;
+  # Copy Configuration File
+  cp /tmp/nginx.conf /etc/nginx/conf.d/default.conf
+  # Make WordPress Ready to Run Nginx
+  sleep 5;
 fi
 
-# Run By Dumb-init
-nginx -g 'daemon off'
+# Run by Dumb Init
+nginx -g 'daemon off;'
