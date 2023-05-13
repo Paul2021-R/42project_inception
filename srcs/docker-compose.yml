@@ -3,7 +3,7 @@
 # Docker Swarm is compatible with Docker Compose on version 3.x
 # Deploy option was added on version 3.x
 # Enough scalability for version 3.x (Same version specification will be needed on multiple Docker Compose)
-version: '3.0'
+version: '3.6'
 
 # Containers by Docker Compose (Orchestrated)
 services:
@@ -181,7 +181,7 @@ services:
     # Container Name as Same as Service Name
     container_name: redis
     # Image Name from Dockerfile
-    image: redis
+    image: 'redis:alpine'
     # Network from Generated One with Docker Compose
     networks:
       - network-redis
@@ -231,6 +231,7 @@ services:
       - REDIS_PORT=${REDIS_PORT}
       - REDIS_CONNECTION_TIMEOUT_SECONDS=${REDIS_CONNECTION_TIMEOUT_SECONDS}
       - REDIS_READ_TIMEOUT_SECONDS=${REDIS_READ_TIMEOUT_SECONDS}
+      - REDIS_WRITE_TIMEOUT=${REDIS_WRITE_TIMEOUT}
       - REDIS_DB_INDEX=${REDIS_DB_INDEX}
     # Image Name from Dockerfile
     image: wordpress

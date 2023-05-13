@@ -1,0 +1,11 @@
+Fatal error: Uncaught Predis\Connection\ConnectionException: Failed to parse address ":" [tcp://:] in /var/www/wordpress/wp-content/plugins/redis-cache/dependencies/predis/predis/src/Connection/AbstractConnection.php:131 Stack trace: 
+
+#0 /var/www/wordpress/wp-content/plugins/redis-cache/dependencies/predis/predis/src/Connection/StreamConnection.php(109): Predis\Connection\AbstractConnection->onConnectionError() 
+
+#1 /var/www/wordpress/wp-content/plugins/redis-cache/dependencies/predis/predis/src/Connection/StreamConnection.php(154): Predis\Connection\StreamConnection->createStreamSocket() 
+
+#2 /var/www/wordpress/wp-content/plugins/redis-cache/dependencies/predis/predis/src/Connection/StreamConnection.php(80): Predis\Connection\StreamConnection->tcpStreamInitializer() 
+
+#3 /var/www/wordpress/wp-content/plugins/redis-cache/dependencies/predis/predis/src/Connection/AbstractConnection.php(80): Predis\Connection\StreamConnection->createResource() 
+
+#4 /var/www/wordpress/wp-content/plugins/redis-cache/dependencies/predis/predis/src/Conn in /var/www/wordpress/wp-content/plugins/redis-cache/dependencies/predis/predis/src/Connection/AbstractConnection.php on line 131

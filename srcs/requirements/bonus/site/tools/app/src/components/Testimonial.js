@@ -12,13 +12,13 @@ const Testimonial = () => {
                     </ol>
                     <div className="carousel-inner" role="listbox">
                         <div className="item active">
-                            <h4>"This is not that bad, scoring is interesting"<br /><span>honlee</span></h4>
+                            <h4>"This is not that bad, scoring is interesting"<br /><span>silee</span></h4>
                         </div>
                         <div className="item">
-                            <h4>"Workout every day, reward as a regular life"<br /><span>jseo</span></h4>
+                            <h4>"Workout every day, reward as a regular life"<br /><span>haryu</span></h4>
                         </div>
                         <div className="item">
-                            <h4>"Workout is hard, but for better life"<br /><span>taeskim</span></h4>
+                            <h4>"Workout is hard, but for better life"<br /><span>jujeon</span></h4>
                         </div>
                     </div>
                     <a className="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
