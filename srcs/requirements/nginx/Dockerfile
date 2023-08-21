@@ -1,29 +1,11 @@
-# Base Image (Currently Most Stable Version 3.13)
-FROM        alpine:3.13
+FROM debian:bullseye
 
-# Package Installation
-RUN         apk update && \
-            apk add nginx openssl && \
-            wget -O /usr/bin/dumb-init https://github.com/Yelp/dumb-init/releases/download/v1.2.5/dumb-init_1.2.5_x86_64 && \
-            chmod +x /usr/bin/dumb-init && \
-            mkdir -p /etc/nginx/tls /var/run/nginx && \
-            openssl req -new -newkey rsa:4096 -x509 -sha256 -days 365 -nodes -out /etc/nginx/tls/haryu.42.fr.crt -keyout /etc/nginx/tls/haryu.42.fr.key -subj "/C=KR/ST=Seoul/L=Songpa-gu/O=42/OU=42Seoul/CN=haryu.42.fr" && \
-            ln -sf /dev/stdout /var/log/nginx/access.log && \
-            ln -sf /dev/stderr /var/log/nginx/error.log && \
-            rm -rf /etc/nginx/conf.d/default.conf
+RUN apt-get -y update && apt-get install -y nginx && apt-get install openssl dumb-init -y
+RUN mkdir -p /var/www/html
+RUN openssl req -newkey rsa:4096 -days 365 -nodes -x509 \
+ -subj "/C=KR/ST=Seoul/L=Seoul/O=42Seoul/OU=42Seoul/CN=haryu" \
+ -out /etc/ssl/certs/haryu.42.fr.crt -keyout /etc/ssl/private/haryu.42.fr.key
+COPY ./conf/default /etc/nginx/sites-available/
 
-# Copy Files
-COPY        conf/nginx.conf /tmp/nginx.conf
-COPY        tools/script.sh /tmp/script.sh
-
-# Permission Control
-RUN         chmod +x /tmp/script.sh
-
-# Explicitly Specify to Expose the Port to the Public though Using Bridge
-EXPOSE      443
-
-# Handle Every Signal Correctly by Dumb Init to PID 1
-ENTRYPOINT  [ "/usr/bin/dumb-init", "--" ]
-
-# Command to Execute by Entrypoint
-CMD         [ "sh", "-c", "/tmp/script.sh" ]
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+CMD ["nginx", "-g", "daemon off;"]

@@ -12,6 +12,9 @@ ifeq ("$(wildcard .setup)", "")
 endif
 		sudo docker-compose -f srcs/docker-compose.yml up --force-recreate --build -d
 
+down:
+		sudo docker-compose -f ./srcs/docker-compose.yml down
+
 clean   : 
 		sudo docker-compose -f srcs/docker-compose.yml down -v --rmi all --remove-orphans
 
