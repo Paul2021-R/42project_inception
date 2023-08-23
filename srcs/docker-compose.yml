@@ -1,3 +1,13 @@
+# 버전 별 차이 
+# 3.0 : 초기 버전 기본 기능, 단일 네트워크 지원, 다중 컨테이너 실행을 위한 기본 구성만 정의할 수 있음. 
+# 3.5 : 컨피그, 시크릿, 네트워크스 같은 객체 정의 가능. 컨테이너 확장, 제한 및 위치 지정과 관련된 많은 옵션이 추가 됨.
+# 네트워크 및 추가 옵션들을 사용하기 편리해서 설정함. 
+# 네트워크 지정 설정, 볼륨설정, env 파일 설정, expose 설정 등이 지원된다.
+# depends_on 특정 서비스가 다른 서비스에 의존 관계를 설정하는 역할을 한다. 이를 설정하면, 여러 컨테이너들의 시작과 중지시 순서를 제어하는 역할을 한다. 
+# 예를 들어 서버의 DB와 서버간의 관계와 같이 의존성이 성립되는 서비스들끼리는 해주면 시작시의 순서성을 보장받을 수 있다. 
+# expos 특정 포트 여는 용도
+# 3.9 : 서비스의 리소스 설정을 세분화하고 확장할 수 있는 옵션이 추가됨
+
 version: "3.5"
 
 services:
@@ -50,7 +60,7 @@ volumes:
     driver: local
     driver_opts:
       type: volume
-      device: /home/haryu/data/wp
+      device: /home/${NAME}/data/wp
       o: bind
   db:
     name: db
@@ -58,7 +68,7 @@ volumes:
     driver_opts:
       type: volume
       o: bind
-      device: /home/haryu/data/db
+      device: /home/${NAME}/data/db
 
 networks:
   inception:
