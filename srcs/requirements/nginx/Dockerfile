@@ -20,3 +20,4 @@ CMD ["nginx", "-g", "daemon off;"]
 # 컨테이너 시작 시 NGINX 의 실행, 데콘모드 작동을 끄고 포그라운드에서 동작하게 만든다. 
 ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 # 컨테이너 시작시 dumb-init 초기화 프로세서로 시그널 처리를 향상 시킨다. 
+# -- 는 옵션값. 
