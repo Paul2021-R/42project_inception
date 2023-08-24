@@ -3,9 +3,9 @@ NAME    = inception
 all     : $(NAME)
 
 $(NAME) : 
-		sudo mkdir -p $(HOME)/data/wordpress $(HOME)/data/mariadb $(HOME)/data/site $(HOME)/data/monitor 
+		sudo mkdir -p $(HOME)/data/wp $(HOME)/data/db
 
-ifeq ("$(wildcard .setup)", "")
+ifeq ("$(wildcard .setup)", "")	
 		sudo chmod 777 /etc/hosts
 		sudo echo "127.0.0.1 haryu.42.fr" >> /etc/hosts
 		touch .setup
